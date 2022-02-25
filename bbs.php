@@ -10,7 +10,8 @@ mysql_select_db('online_bbs',$link);
 
 $errors = array();
 
-//POSTなら保存処理実行
+//POSTなら保存処理実行 必要っぽいで
+//GETとかならそもそもsqlを実行しない
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $name = null;
     if(!isset($_POST['name']) || !strlen($_POST['name'])){
@@ -35,12 +36,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 
     if(count($errors) === 0){
+        //信用できないデータに対してmysql_real_escapeを行っている、単純に文字列の代入になっている dateにはいらんのね
         $sql = "INSERT INTO `post`(`name`,`comment`,`created_at`)VALUES(
             '".mysql_real_escape_string($name)."',
             '".mysql_real_escape_string($comment)."',
             '".date('Y-m-d H:i:s')."')";
 
             mysql_query($sql, $link);
+        //この辺分からん
     }
 }
 ?>
